@@ -1,0 +1,11 @@
+{
+  "name": "graph-db-lab",
+  "description": "A web-based query workbench for Amazon Neptune graph databases with Cypher syntax highlighting, query history, and dark mode support.",
+  "private": true,
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "dev:server": "bun run --filter server dev",
+    "dev:client": "bun run --filter client dev",
+    "dev": "bun run dev:server & bun run dev:client"
+  }
+}

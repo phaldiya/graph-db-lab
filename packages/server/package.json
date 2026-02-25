@@ -1,0 +1,19 @@
+{
+  "name": "server",
+  "private": true,
+  "scripts": {
+    "dev": "bun --env-file=../../.env --watch src/index.ts"
+  },
+  "dependencies": {
+    "@aws-crypto/sha256-js": "^5.2.0",
+    "@aws-sdk/credential-providers": "^3.997.0",
+    "@fastify/cors": "^11.0.1",
+    "@smithy/protocol-http": "^5.3.10",
+    "@smithy/signature-v4": "^5.3.10",
+    "fastify": "^5.2.1"
+  },
+  "devDependencies": {
+    "bun-types": "^1.2.4",
+    "typescript": "^5.7.3"
+  }
+}

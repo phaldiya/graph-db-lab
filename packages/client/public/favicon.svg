@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Border -->
+  <rect x="4" y="4" width="504" height="504" rx="64" ry="64" fill="none" stroke="#6366f1" stroke-width="8" stroke-opacity="0.5"/>
+  <defs>
+    <linearGradient id="liquid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#818cf8" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="flask-glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a5b4fc" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#818cf8" stop-opacity="0.15"/>
+    </linearGradient>
+    <linearGradient id="glass-shine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#c7d2fe" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#c7d2fe" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="node-glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a5b4fc"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <clipPath id="flask-clip">
+      <path d="M215 170 L215 260 L145 370 Q130 395 150 415 Q160 425 180 425 L332 425 Q352 425 362 415 Q382 395 367 370 L297 260 L297 170 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Floating graph symbols (left side) -->
+  <text x="52" y="168" font-family="'Courier New', monospace" font-size="26" font-weight="bold" fill="#4f46e5" opacity="0.7">V</text>
+  <text x="55" y="222" font-family="Georgia, 'Times New Roman', serif" font-size="22" font-style="italic" fill="#4f46e5" opacity="0.6">E</text>
+  <text x="48" y="280" font-family="'Courier New', monospace" font-size="24" fill="#4338ca" opacity="0.65">G()</text>
+  <text x="58" y="345" font-family="Georgia, 'Times New Roman', serif" font-size="22" font-style="italic" fill="#4f46e5" opacity="0.6">deg</text>
+  <text x="55" y="405" font-family="Georgia, 'Times New Roman', serif" font-size="26" fill="#4f46e5" opacity="0.55">N</text>
+
+  <!-- Floating graph symbols (right side) -->
+  <text x="410" y="168" font-family="Georgia, 'Times New Roman', serif" font-size="24" font-style="italic" fill="#4f46e5" opacity="0.6">w</text>
+  <text x="400" y="228" font-family="'Courier New', monospace" font-size="22" fill="#4338ca" opacity="0.65">BFS</text>
+  <text x="405" y="290" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-style="italic" fill="#4f46e5" opacity="0.55">path</text>
+  <text x="412" y="348" font-family="Georgia, 'Times New Roman', serif" font-size="26" fill="#4f46e5" opacity="0.65">&#8594;</text>
+  <text x="410" y="408" font-family="'Courier New', monospace" font-size="22" fill="#4f46e5" opacity="0.55">DFS</text>
+
+  <!-- Small graph motif (left) - triangle graph -->
+  <g opacity="0.5" stroke="#4f46e5" stroke-width="1.5" stroke-linecap="round">
+    <line x1="68" y1="305" x2="95" y2="325"/>
+    <line x1="95" y1="325" x2="68" y2="325"/>
+    <line x1="68" y1="325" x2="68" y2="305"/>
+    <circle cx="68" cy="305" r="3" fill="#4338ca"/>
+    <circle cx="95" cy="325" r="3" fill="#4338ca"/>
+    <circle cx="68" cy="325" r="3" fill="#4338ca"/>
+  </g>
+
+  <!-- Small directed edge (right) -->
+  <g opacity="0.45" stroke="#4f46e5" stroke-width="1.5" stroke-linecap="round">
+    <line x1="400" y1="370" x2="445" y2="385"/>
+    <circle cx="400" cy="370" r="3" fill="#4f46e5"/>
+    <circle cx="445" cy="385" r="3" fill="#4f46e5"/>
+    <path d="M438 383 L445 385 L440 378" fill="none" stroke="#4338ca" stroke-width="1.5"/>
+  </g>
+
+  <!-- Tiny adjacency matrix hint (top-left) -->
+  <g opacity="0.55" stroke="#4f46e5" stroke-width="1" stroke-linecap="round">
+    <rect x="108" y="85" width="30" height="30" rx="3" fill="none" stroke="#4f46e5" stroke-width="1.5"/>
+    <circle cx="115" cy="92" r="2" fill="#4338ca"/>
+    <circle cx="131" cy="92" r="2" fill="#4338ca" opacity="0.3"/>
+    <circle cx="115" cy="100" r="2" fill="#4338ca" opacity="0.3"/>
+    <circle cx="131" cy="100" r="2" fill="#4338ca"/>
+    <circle cx="115" cy="108" r="2" fill="#4338ca"/>
+    <circle cx="131" cy="108" r="2" fill="#4338ca" opacity="0.3"/>
+  </g>
+
+  <!-- Tiny tree graph (top-right) -->
+  <g opacity="0.5" stroke="#4f46e5" stroke-width="1.5" stroke-linecap="round">
+    <line x1="435" y1="88" x2="420" y2="108"/>
+    <line x1="435" y1="88" x2="450" y2="108"/>
+    <circle cx="435" cy="88" r="3" fill="#4338ca"/>
+    <circle cx="420" cy="108" r="2.5" fill="#4338ca"/>
+    <circle cx="450" cy="108" r="2.5" fill="#4338ca"/>
+  </g>
+
+  <!-- Accent dots -->
+  <circle cx="105" cy="140" r="5" fill="#4f46e5" opacity="0.6"/>
+  <circle cx="42" cy="248" r="3" fill="#4338ca" opacity="0.5"/>
+  <circle cx="95" cy="378" r="4" fill="#4f46e5" opacity="0.45"/>
+  <circle cx="442" cy="145" r="4" fill="#4338ca" opacity="0.55"/>
+  <circle cx="460" cy="260" r="3" fill="#4f46e5" opacity="0.5"/>
+  <circle cx="390" cy="400" r="4" fill="#4f46e5" opacity="0.45"/>
+  <circle cx="132" cy="198" r="3" fill="#6366f1" opacity="0.5"/>
+  <circle cx="452" cy="332" r="3" fill="#6366f1" opacity="0.45"/>
+  <circle cx="140" cy="420" r="3" fill="#16a34a" opacity="0.55"/>
+  <circle cx="380" cy="130" r="3" fill="#16a34a" opacity="0.5"/>
+
+  <!-- Flask neck -->
+  <rect x="215" y="120" width="82" height="55" rx="4" fill="url(#flask-glass)" stroke="#6366f1" stroke-width="2" stroke-opacity="0.5"/>
+
+  <!-- Flask body fill -->
+  <path d="M215 170 L215 260 L145 370 Q130 395 150 415 Q160 425 180 425 L332 425 Q352 425 362 415 Q382 395 367 370 L297 260 L297 170 Z"
+        fill="url(#flask-glass)" stroke="#6366f1" stroke-width="3" stroke-opacity="0.6"/>
+
+  <!-- Liquid inside flask -->
+  <g clip-path="url(#flask-clip)">
+    <rect x="130" y="310" width="250" height="120" fill="url(#liquid)"/>
+    <!-- Wave -->
+    <path d="M130 312 Q180 298 220 314 Q260 330 300 312 Q340 296 380 314 L380 430 L130 430 Z"
+          fill="#6366f1" opacity="0.5"/>
+    <!-- Bubbles -->
+    <circle cx="198" cy="368" r="6" fill="#c7d2fe" opacity="0.4"/>
+    <circle cx="278" cy="388" r="4" fill="#c7d2fe" opacity="0.3"/>
+    <circle cx="312" cy="358" r="5" fill="#e0e7ff" opacity="0.3"/>
+  </g>
+
+  <!-- Flask outline -->
+  <path d="M215 170 L215 260 L145 370 Q130 395 150 415 Q160 425 180 425 L332 425 Q352 425 362 415 Q382 395 367 370 L297 260 L297 170"
+        fill="none" stroke="#6366f1" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+
+  <!-- Flask rim -->
+  <rect x="205" y="115" width="102" height="12" rx="6" fill="#6366f1" opacity="0.55"/>
+
+  <!-- Glass shine -->
+  <path d="M220 175 L220 255 L160 355"
+        fill="none" stroke="url(#glass-shine)" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Graph network inside flask -->
+  <!-- Edges (drawn first, behind nodes) -->
+  <g stroke="#312e81" stroke-width="3" stroke-linecap="round" opacity="0.6">
+    <!-- Central node connections -->
+    <line x1="256" y1="280" x2="210" y2="240"/>
+    <line x1="256" y1="280" x2="302" y2="240"/>
+    <line x1="256" y1="280" x2="230" y2="340"/>
+    <line x1="256" y1="280" x2="290" y2="345"/>
+    <!-- Outer connections -->
+    <line x1="210" y1="240" x2="302" y2="240"/>
+    <line x1="230" y1="340" x2="290" y2="345"/>
+    <line x1="210" y1="240" x2="185" y2="310"/>
+    <line x1="302" y1="240" x2="320" y2="310"/>
+    <line x1="185" y1="310" x2="230" y2="340"/>
+    <line x1="320" y1="310" x2="290" y2="345"/>
+  </g>
+
+  <!-- Graph nodes -->
+  <!-- Central node (larger) -->
+  <circle cx="256" cy="280" r="14" fill="#312e81" opacity="0.85"/>
+  <circle cx="256" cy="280" r="10" fill="url(#node-glow)" opacity="0.9"/>
+  <!-- Top-left node -->
+  <circle cx="210" cy="240" r="10" fill="#312e81" opacity="0.8"/>
+  <circle cx="210" cy="240" r="7" fill="#818cf8" opacity="0.9"/>
+  <!-- Top-right node -->
+  <circle cx="302" cy="240" r="10" fill="#312e81" opacity="0.8"/>
+  <circle cx="302" cy="240" r="7" fill="#818cf8" opacity="0.9"/>
+  <!-- Bottom-left node -->
+  <circle cx="230" cy="340" r="10" fill="#312e81" opacity="0.8"/>
+  <circle cx="230" cy="340" r="7" fill="#818cf8" opacity="0.9"/>
+  <!-- Bottom-right node -->
+  <circle cx="290" cy="345" r="10" fill="#312e81" opacity="0.8"/>
+  <circle cx="290" cy="345" r="7" fill="#818cf8" opacity="0.9"/>
+  <!-- Mid-left node -->
+  <circle cx="185" cy="310" r="9" fill="#312e81" opacity="0.8"/>
+  <circle cx="185" cy="310" r="6" fill="#818cf8" opacity="0.9"/>
+  <!-- Mid-right node -->
+  <circle cx="320" cy="310" r="9" fill="#312e81" opacity="0.8"/>
+  <circle cx="320" cy="310" r="6" fill="#818cf8" opacity="0.9"/>
+
+  <!-- Angle brackets around graph -->
+  <text x="160" y="300" font-family="'Courier New', monospace" font-size="65" font-weight="bold" fill="#4f46e5" opacity="0.3">&lt;</text>
+  <text x="330" y="300" font-family="'Courier New', monospace" font-size="65" font-weight="bold" fill="#4f46e5" opacity="0.3">&gt;</text>
+
+  <!-- Sparkles -->
+  <g fill="#4f46e5" opacity="0.5">
+    <circle cx="335" cy="138" r="2"/>
+    <circle cx="175" cy="162" r="1.5"/>
+    <circle cx="370" cy="278" r="2"/>
+    <circle cx="200" cy="430" r="1.5"/>
+    <circle cx="320" cy="440" r="1.5"/>
+  </g>
+</svg>
