@@ -19,6 +19,12 @@
   --color-syntax-operator: #94a3b8;
   --color-syntax-node: #0d9488;
   --color-syntax-edge: #ea580c;
+  --color-json-key: var(--color-syntax-label);
+  --color-json-string: var(--color-syntax-string);
+  --color-json-number: var(--color-syntax-number);
+  --color-json-boolean: var(--color-syntax-keyword);
+  --color-json-null: var(--color-text-secondary);
+  --color-json-bracket: var(--color-text-secondary);
 }
 
 .dark {

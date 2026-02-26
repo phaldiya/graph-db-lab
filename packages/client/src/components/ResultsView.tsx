@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { JsonView } from "./JsonView";
 
 type SortDir = "asc" | "desc";
 
@@ -17,16 +18,25 @@ interface NeptuneNode {
 }
 
 export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
-  const { columns, rows } = data ? flattenResults(data.results) : { columns: [], rows: [] };
+  const { columns, rows } = data
+    ? flattenResults(data.results)
+    : { columns: [], rows: [] };
 
-  const [sort, setSort] = useState<{ col: string | null; dir: SortDir }>({ col: null, dir: "asc" });
+  const [sort, setSort] = useState<{ col: string | null; dir: SortDir }>({
+    col: null,
+    dir: "asc",
+  });
+  const [viewMode, setViewMode] = useState<"table" | "json">("table");
 
   // Reset client sort when results change
   useEffect(() => {
     setSort({ col: null, dir: "asc" });
   }, [data]);
 
-  const querySort = useMemo(() => (query ? parseOrderBy(query, columns) : []), [query, columns]);
+  const querySort = useMemo(
+    () => (query ? parseOrderBy(query, columns) : []),
+    [query, columns],
+  );
 
   const sortedRows = useMemo(() => {
     if (!sort.col) return rows;
@@ -37,9 +47,10 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
       if (av == null && bv == null) return 0;
       if (av == null) return 1;
       if (bv == null) return -1;
-      const cmp = typeof av === "number" && typeof bv === "number"
-        ? av - bv
-        : String(av).localeCompare(String(bv), undefined, { numeric: true });
+      const cmp =
+        typeof av === "number" && typeof bv === "number"
+          ? av - bv
+          : String(av).localeCompare(String(bv), undefined, { numeric: true });
       return dir === "asc" ? cmp : -cmp;
     });
   }, [rows, sort]);
@@ -54,21 +65,44 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
   const downloadCsv = useCallback(() => {
     if (columns.length === 0 || rows.length === 0) return;
     const header = columns.map(escapeCsv).join(",");
-    const body = rows.map((row) => columns.map((col) => escapeCsv(formatCell(row[col]))).join(",")).join("\n");
+    const body = rows
+      .map((row) =>
+        columns.map((col) => escapeCsv(formatCell(row[col]))).join(","),
+      )
+      .join("\n");
     download(`${header}\n${body}`, "results.csv", "text/csv");
   }, [columns, rows]);
 
   const downloadJson = useCallback(() => {
     if (!data) return;
-    download(JSON.stringify(rows.length > 0 ? rows : data.results, null, 2), "results.json", "application/json");
+    download(
+      JSON.stringify(rows.length > 0 ? rows : data.results, null, 2),
+      "results.json",
+      "application/json",
+    );
   }, [data, rows]);
 
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <svg className="h-5 w-5 animate-spin text-(--color-primary)" viewBox="0 0 24 24" fill="none">
-          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+        <svg
+          className="h-5 w-5 animate-spin text-(--color-primary)"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          />
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+          />
         </svg>
       </div>
     );
@@ -76,7 +110,10 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
 
   if (error) {
     return (
-      <div role="alert" className="rounded-lg border border-(--color-error) bg-red-50 p-4 dark:bg-red-950">
+      <div
+        role="alert"
+        className="rounded-lg border border-(--color-error) bg-red-50 p-4 dark:bg-red-950"
+      >
         <p className="text-(--color-error) text-sm">{error}</p>
       </div>
     );
@@ -86,35 +123,97 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
 
   return (
     <div className="flex flex-1 flex-col gap-2 overflow-hidden">
-      {/* Stats + Download bar */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 text-xs">
-          <span className="text-(--color-text-secondary)">
-            {data.results.length} row{data.results.length !== 1 ? "s" : ""}
-          </span>
-          <span className="text-(--color-text-secondary) opacity-50">&middot;</span>
-          <span className="text-(--color-text-secondary)">{formatDuration(data.duration)}</span>
+      {/* Top bar: view mode toggle + download buttons (right) */}
+      <div className="flex items-center justify-end gap-3">
+        <div className="flex items-center overflow-hidden rounded-md border border-(--color-border)">
+          <button
+            onClick={() => setViewMode("table")}
+            aria-label="Table view"
+            className={`inline-flex items-center gap-1 px-2 py-1 text-xs transition-colors ${viewMode === "table" ? "bg-(--color-primary) text-white" : "bg-(--color-surface) text-(--color-text-secondary) hover:bg-(--color-surface-alt)"}`}
+          >
+            <svg
+              className="h-3.5 w-3.5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <line x1="3" y1="9" x2="21" y2="9" />
+              <line x1="3" y1="15" x2="21" y2="15" />
+              <line x1="9" y1="3" x2="9" y2="21" />
+              <line x1="15" y1="3" x2="15" y2="21" />
+            </svg>
+            Table
+          </button>
+          <button
+            onClick={() => setViewMode("json")}
+            aria-label="JSON view"
+            className={`inline-flex items-center gap-1 px-2 py-1 text-xs transition-colors ${viewMode === "json" ? "bg-(--color-primary) text-white" : "bg-(--color-surface) text-(--color-text-secondary) hover:bg-(--color-surface-alt)"}`}
+          >
+            <svg
+              className="h-3.5 w-3.5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <polyline points="16 18 22 12 16 6" />
+              <polyline points="8 6 2 12 8 18" />
+            </svg>
+            JSON
+          </button>
         </div>
         <div className="flex items-center gap-1">
           <button
             onClick={downloadCsv}
             className="inline-flex items-center gap-1 rounded px-2 py-1 text-(--color-text-secondary) text-xs transition-colors hover:bg-(--color-surface-alt) hover:text-(--color-text)"
           >
-            <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+            <svg
+              className="h-3.5 w-3.5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
             CSV
           </button>
           <button
             onClick={downloadJson}
             className="inline-flex items-center gap-1 rounded px-2 py-1 text-(--color-text-secondary) text-xs transition-colors hover:bg-(--color-surface-alt) hover:text-(--color-text)"
           >
-            <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+            <svg
+              className="h-3.5 w-3.5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
             JSON
           </button>
         </div>
       </div>
 
-      {/* Table */}
-      {columns.length > 0 ? (
+      {/* Results content */}
+      {viewMode === "table" && columns.length > 0 ? (
         <div className="flex-1 overflow-auto rounded-lg border border-(--color-border)">
           <table className="w-full text-left text-sm">
             <thead className="sticky top-0 z-10">
@@ -131,7 +230,9 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
                       <span className="inline-flex items-center gap-1">
                         {col}
                         {isClientSorted && <SortArrow dir={sort.dir} />}
-                        {qs && !isClientSorted && <QuerySortBadge dir={qs.dir} index={qs.index} />}
+                        {qs && !isClientSorted && (
+                          <QuerySortBadge dir={qs.dir} index={qs.index} />
+                        )}
                       </span>
                     </th>
                   );
@@ -140,9 +241,15 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
             </thead>
             <tbody className="bg-(--color-surface)">
               {sortedRows.map((row, i) => (
-                <tr key={i} className={`border-(--color-border) border-b last:border-b-0 transition-colors hover:bg-(--color-surface-alt) ${i % 2 === 1 ? "bg-(--color-surface-alt)/50" : ""}`}>
+                <tr
+                  key={i}
+                  className={`border-(--color-border) border-b last:border-b-0 transition-colors hover:bg-(--color-surface-alt) ${i % 2 === 1 ? "bg-(--color-surface-alt)/50" : ""}`}
+                >
                   {columns.map((col) => (
-                    <td key={col} className="whitespace-nowrap px-3 py-2 font-mono text-(--color-text) text-xs">
+                    <td
+                      key={col}
+                      className="whitespace-nowrap px-3 py-2 font-mono text-(--color-text) text-xs"
+                    >
                       {formatCell(row[col])}
                     </td>
                   ))}
@@ -152,10 +259,35 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
           </table>
         </div>
       ) : (
-        <pre className="flex-1 overflow-auto rounded-lg bg-(--color-surface-alt) p-3 font-mono text-(--color-text) text-sm">
-          {JSON.stringify(data.results, null, 2)}
-        </pre>
+        <div className="flex flex-1 flex-col gap-2 overflow-auto">
+          {data.results.map((result, i) => (
+            <div
+              key={i}
+              className="rounded-lg border border-(--color-border) bg-(--color-surface) p-3"
+            >
+              <div className="mb-1 text-xs text-(--color-text-secondary)">
+                Row {i + 1}
+              </div>
+              <div className="font-mono text-sm">
+                <JsonView data={simplifyForJson(result)} />
+              </div>
+            </div>
+          ))}
+        </div>
       )}
+
+      {/* Stats */}
+      <div className="flex items-center justify-end gap-3 text-xs">
+        <span className="text-(--color-text-secondary)">
+          {data.results.length} row{data.results.length !== 1 ? "s" : ""}
+        </span>
+        <span className="text-(--color-text-secondary) opacity-50">
+          &middot;
+        </span>
+        <span className="text-(--color-text-secondary)">
+          {formatDuration(data.duration)}
+        </span>
+      </div>
     </div>
   );
 }
@@ -177,6 +309,29 @@ function escapeCsv(value: string): string {
   return value;
 }
 
+// For JSON view: replace Neptune nodes with their ~properties so the tree shows actual data
+function simplifyForJson(result: unknown): unknown {
+  if (!isNestedObject(result)) return result;
+
+  const obj = result as Record<string, unknown>;
+  const keys = Object.keys(obj);
+  const simplified: Record<string, unknown> = {};
+
+  for (const key of keys) {
+    const value = obj[key];
+    if (isNeptuneNode(value)) {
+      const props = { "~labels": value["~labels"], ...value["~properties"] };
+      // Single return key → elevate properties directly
+      if (keys.length === 1) return props;
+      simplified[key] = props;
+    } else {
+      simplified[key] = value;
+    }
+  }
+
+  return simplified;
+}
+
 function isNeptuneNode(value: unknown): value is NeptuneNode {
   return (
     typeof value === "object" &&
@@ -191,7 +346,10 @@ function isNestedObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function flattenResults(results: unknown[]): { columns: string[]; rows: Record<string, unknown>[] } {
+function flattenResults(results: unknown[]): {
+  columns: string[];
+  rows: Record<string, unknown>[];
+} {
   if (results.length === 0) return { columns: [], rows: [] };
 
   const first = results[0];
@@ -233,11 +391,8 @@ function flattenResults(results: unknown[]): { columns: string[]; rows: Record<s
       const prefix = returnKeys.length > 1 ? `${key}.` : "";
 
       if (isNeptuneNode(value)) {
-        row[`${prefix}~id`] = value["~id"];
-        columnSet.add(`${prefix}~id`);
         row[`${prefix}~labels`] = value["~labels"].join(", ");
         columnSet.add(`${prefix}~labels`);
-
         for (const [prop, propVal] of Object.entries(value["~properties"])) {
           row[`${prefix}${prop}`] = propVal;
           columnSet.add(`${prefix}${prop}`);
@@ -255,10 +410,10 @@ function flattenResults(results: unknown[]): { columns: string[]; rows: Record<s
   }
 
   const columns = [...columnSet].sort((a, b) => {
-    const aIsMeta = a.endsWith("~id") || a.endsWith("~labels");
-    const bIsMeta = b.endsWith("~id") || b.endsWith("~labels");
-    if (aIsMeta && !bIsMeta) return -1;
-    if (!aIsMeta && bIsMeta) return 1;
+    const aIsLabels = a.endsWith("~labels");
+    const bIsLabels = b.endsWith("~labels");
+    if (aIsLabels && !bIsLabels) return -1;
+    if (!aIsLabels && bIsLabels) return 1;
     return a.localeCompare(b);
   });
 
@@ -283,42 +438,77 @@ function formatCell(value: unknown): string {
 
 function SortArrow({ dir }: { dir: SortDir }) {
   return (
-    <svg className="h-3.5 w-3.5 text-(--color-primary)" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      {dir === "asc"
-        ? <polyline points="6 15 12 9 18 15" />
-        : <polyline points="6 9 12 15 18 9" />}
+    <svg
+      className="h-3.5 w-3.5 text-(--color-primary)"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {dir === "asc" ? (
+        <polyline points="6 15 12 9 18 15" />
+      ) : (
+        <polyline points="6 9 12 15 18 9" />
+      )}
     </svg>
   );
 }
 
 function QuerySortBadge({ dir, index }: { dir: SortDir; index: number }) {
   return (
-    <span className="inline-flex items-center gap-0.5 opacity-50" title={`Query sorted ${dir === "asc" ? "ascending" : "descending"} (ORDER BY #${index + 1})`}>
-      <svg className="h-3.5 w-3.5 text-(--color-text-secondary)" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-        {dir === "asc"
-          ? <polyline points="6 15 12 9 18 15" />
-          : <polyline points="6 9 12 15 18 9" />}
+    <span
+      className="inline-flex items-center gap-0.5 opacity-50"
+      title={`Query sorted ${dir === "asc" ? "ascending" : "descending"} (ORDER BY #${index + 1})`}
+    >
+      <svg
+        className="h-3.5 w-3.5 text-(--color-text-secondary)"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {dir === "asc" ? (
+          <polyline points="6 15 12 9 18 15" />
+        ) : (
+          <polyline points="6 9 12 15 18 9" />
+        )}
       </svg>
-      {index > 0 && <span className="font-mono text-[10px] text-(--color-text-secondary)">{index + 1}</span>}
+      {index > 0 && (
+        <span className="font-mono text-[10px] text-(--color-text-secondary)">
+          {index + 1}
+        </span>
+      )}
     </span>
   );
 }
 
 // --- ORDER BY parser ---
 
-interface QuerySortEntry { col: string; dir: SortDir; index: number }
+interface QuerySortEntry {
+  col: string;
+  dir: SortDir;
+  index: number;
+}
 
 function parseOrderBy(query: string, columns: string[]): QuerySortEntry[] {
   // Strip strings to avoid matching keywords inside them
   const stripped = query.replace(/(?:'[^']*'|"[^"]*")/g, "''");
 
   // Find the ORDER BY clause — grab everything after ORDER BY until next major keyword or end
-  const match = stripped.match(/\bORDER\s+BY\s+([\s\S]+?)(?:\bLIMIT\b|\bSKIP\b|\bUNION\b|\bRETURN\b|$)/i);
+  const match = stripped.match(
+    /\bORDER\s+BY\s+([\s\S]+?)(?:\bLIMIT\b|\bSKIP\b|\bUNION\b|\bRETURN\b|$)/i,
+  );
   if (!match) return [];
 
   // Also extract RETURN aliases: RETURN expr AS alias
   const aliasMap = new Map<string, string>();
-  const returnMatch = stripped.match(/\bRETURN\s+(?:DISTINCT\s+)?([\s\S]+?)(?:\bORDER\b|\bLIMIT\b|\bSKIP\b|\bUNION\b|\bWHERE\b|$)/i);
+  const returnMatch = stripped.match(
+    /\bRETURN\s+(?:DISTINCT\s+)?([\s\S]+?)(?:\bORDER\b|\bLIMIT\b|\bSKIP\b|\bUNION\b|\bWHERE\b|$)/i,
+  );
   if (returnMatch) {
     for (const part of returnMatch[1].split(",")) {
       const aliasM = part.trim().match(/^(.+?)\s+AS\s+(\w+)\s*$/i);
@@ -336,12 +526,17 @@ function parseOrderBy(query: string, columns: string[]): QuerySortEntry[] {
     const tokens = part.split(/\s+/);
     const expr = tokens[0];
     const dirToken = tokens[tokens.length - 1]?.toUpperCase();
-    const dir: SortDir = dirToken === "DESC" || dirToken === "DESCENDING" ? "desc" : "asc";
+    const dir: SortDir =
+      dirToken === "DESC" || dirToken === "DESCENDING" ? "desc" : "asc";
 
     // Try to match expr to a column: exact match, or resolve alias
     const resolved = aliasMap.get(expr) ?? expr;
     const col = columns.find(
-      (c) => c === expr || c === resolved || c.toLowerCase() === expr.toLowerCase() || c.toLowerCase() === resolved.toLowerCase(),
+      (c) =>
+        c === expr ||
+        c === resolved ||
+        c.toLowerCase() === expr.toLowerCase() ||
+        c.toLowerCase() === resolved.toLowerCase(),
     );
 
     if (col) {
