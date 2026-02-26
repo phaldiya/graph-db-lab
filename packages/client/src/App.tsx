@@ -14,9 +14,18 @@ export default function App() {
   const [historyOpen, setHistoryOpen] = useState(false);
   const [externalQuery, setExternalQuery] = useState<{ text: string; token: number } | undefined>();
 
+  const [profile, setProfile] = useState<string | null>(null);
+
   const editorQueryRef = useRef("");
   const executionTimestampRef = useRef<number | null>(null);
   const prevLoadingRef = useRef(false);
+
+  useEffect(() => {
+    fetch("/api/health")
+      .then((r) => r.json())
+      .then((d) => setProfile(d.profile ?? null))
+      .catch(() => {});
+  }, []);
 
   const handleRun = useCallback(
     (query: string) => {
@@ -77,6 +86,11 @@ export default function App() {
             <circle cx="15" cy="14.5" r="0.4" fill="var(--color-primary)" opacity="0.3" />
           </svg>
           <h1 className="font-semibold text-[var(--color-text)] text-lg">Graph DB Lab</h1>
+          {profile && (
+            <span className="rounded-full bg-[var(--color-primary)]/15 px-2.5 py-0.5 text-xs font-medium text-[var(--color-primary)]">
+              {profile}
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-1">
           {/* History button */}

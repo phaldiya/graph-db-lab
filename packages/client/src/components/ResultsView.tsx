@@ -118,7 +118,7 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
         <div className="flex-1 overflow-auto rounded-lg border border-[var(--color-border)]">
           <table className="w-full text-left text-sm">
             <thead className="sticky top-0 z-10">
-              <tr className="border-[var(--color-border)] border-b bg-[var(--color-surface-alt)]">
+              <tr className="border-[var(--color-border)] border-b bg-[var(--color-border)]/70">
                 {columns.map((col) => {
                   const qs = querySort.find((s) => s.col === col);
                   const isClientSorted = sort.col === col;
@@ -140,7 +140,7 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
             </thead>
             <tbody className="bg-[var(--color-surface)]">
               {sortedRows.map((row, i) => (
-                <tr key={i} className="border-[var(--color-border)] border-b last:border-b-0 transition-colors hover:bg-[var(--color-surface-alt)]">
+                <tr key={i} className={`border-[var(--color-border)] border-b last:border-b-0 transition-colors hover:bg-[var(--color-surface-alt)] ${i % 2 === 1 ? "bg-[var(--color-surface-alt)]/50" : ""}`}>
                   {columns.map((col) => (
                     <td key={col} className="whitespace-nowrap px-3 py-2 font-mono text-[var(--color-text)] text-xs">
                       {formatCell(row[col])}

@@ -19,4 +19,5 @@ export interface QueryErrorResponse {
 
 export interface HealthResponse {
   status: "ok";
+  profile: string;
 }

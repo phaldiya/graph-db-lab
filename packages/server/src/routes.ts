@@ -4,7 +4,7 @@ import type { QueryRequest, QuerySuccessResponse, QueryErrorResponse, HealthResp
 
 export function registerRoutes(app: FastifyInstance, graphDbUrl: string) {
   app.get<{ Reply: HealthResponse }>("/api/health", async () => {
-    return { status: "ok" };
+    return { status: "ok", profile: process.env.AWS_PROFILE || "staging" };
   });
 
   app.post<{ Body: QueryRequest; Reply: QuerySuccessResponse | QueryErrorResponse }>(

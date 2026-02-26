@@ -1,4 +1,10 @@
-import { useState, useCallback, useRef, useEffect, type KeyboardEvent } from "react";
+import {
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+  type KeyboardEvent,
+} from "react";
 
 interface QueryEditorProps {
   onRun: (query: string) => void;
@@ -64,7 +70,10 @@ function beautifyQuery(query: string): string {
 
       // Insert newlines before major keywords
       for (const kw of MAJOR_KEYWORDS) {
-        const re = new RegExp(`(?<=\\S)\\s+(?=${kw.replace(/ /g, "\\s+")}\\b)`, "gi");
+        const re = new RegExp(
+          `(?<=\\S)\\s+(?=${kw.replace(/ /g, "\\s+")}\\b)`,
+          "gi",
+        );
         cleaned = cleaned.replace(re, "\n");
       }
 
@@ -82,7 +91,10 @@ function beautifyQuery(query: string): string {
       cleaned = cleaned.replace(/\x00ONCREATE\x00/g, "ON CREATE");
 
       // Restore strings
-      cleaned = cleaned.replace(/\x00S(\d+)\x00/g, (_, i) => strings[Number(i)]);
+      cleaned = cleaned.replace(
+        /\x00S(\d+)\x00/g,
+        (_, i) => strings[Number(i)],
+      );
 
       // Trim trailing spaces on each resulting line
       return cleaned
@@ -93,7 +105,12 @@ function beautifyQuery(query: string): string {
     .join("\n");
 }
 
-export function QueryEditor({ onRun, loading, onQueryChange, externalQuery }: QueryEditorProps) {
+export function QueryEditor({
+  onRun,
+  loading,
+  onQueryChange,
+  externalQuery,
+}: QueryEditorProps) {
   const [query, setQuery] = useState(DEFAULT_QUERY);
   const [scrollTop, setScrollTop] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -140,12 +157,17 @@ export function QueryEditor({ onRun, loading, onQueryChange, externalQuery }: Qu
     for (let i = 0; i < lines.length; i++) {
       const lineEnd = pos + lines[i].length;
       if (pos <= selectionStart && selectionStart <= lineEnd) startLine = i;
-      if (pos <= selectionEnd && selectionEnd <= lineEnd) { endLine = i; break; }
+      if (pos <= selectionEnd && selectionEnd <= lineEnd) {
+        endLine = i;
+        break;
+      }
       pos = lineEnd + 1;
     }
 
     const targetLines = lines.slice(startLine, endLine + 1);
-    const allCommented = targetLines.every((l) => l.trimStart().startsWith("//"));
+    const allCommented = targetLines.every((l) =>
+      l.trimStart().startsWith("//"),
+    );
 
     const newLines = [...lines];
     for (let i = startLine; i <= endLine; i++) {
@@ -161,7 +183,11 @@ export function QueryEditor({ onRun, loading, onQueryChange, externalQuery }: Qu
 
     const delta = newValue.length - value.length;
     requestAnimationFrame(() => {
-      ta.selectionStart = selectionStart + (allCommented ? Math.min(0, delta) : Math.max(0, newLines[startLine].length - lines[startLine].length));
+      ta.selectionStart =
+        selectionStart +
+        (allCommented
+          ? Math.min(0, delta)
+          : Math.max(0, newLines[startLine].length - lines[startLine].length));
       ta.selectionEnd = selectionEnd + delta;
     });
   }, [updateQuery]);
@@ -180,7 +206,11 @@ export function QueryEditor({ onRun, loading, onQueryChange, externalQuery }: Qu
         e.preventDefault();
         toggleComment();
       }
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === "f" || e.key === "F")) {
+      if (
+        (e.ctrlKey || e.metaKey) &&
+        e.shiftKey &&
+        (e.key === "f" || e.key === "F")
+      ) {
         e.preventDefault();
         handleBeautify();
       }
@@ -199,7 +229,7 @@ export function QueryEditor({ onRun, loading, onQueryChange, externalQuery }: Qu
   return (
     <div className="flex flex-col gap-2">
       {/* Editor */}
-      <div className="relative overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] focus-within:ring-2 focus-within:ring-[var(--color-primary)]">
+      <div className="relative h-40 min-h-40 max-h-[calc(100vh-10rem)] resize-y overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] focus-within:ring-2 focus-within:ring-[var(--color-primary)]">
         {/* Syntax-highlighted overlay */}
         <pre
           aria-hidden
@@ -215,10 +245,9 @@ export function QueryEditor({ onRun, loading, onQueryChange, externalQuery }: Qu
           onChange={(e) => updateQuery(e.target.value)}
           onKeyDown={handleKeyDown}
           onScroll={handleScroll}
-          rows={6}
           spellCheck={false}
           aria-label="Cypher query editor"
-          className="relative z-10 w-full resize-none bg-transparent px-3 py-2.5 font-mono text-sm leading-relaxed text-transparent caret-[var(--color-text)] outline-none"
+          className="relative z-10 h-full w-full resize-none bg-transparent px-3 py-2.5 font-mono text-sm leading-relaxed text-transparent caret-[var(--color-text)] outline-none"
           placeholder="MATCH (n) RETURN n LIMIT 10"
         />
       </div>
@@ -232,12 +261,28 @@ export function QueryEditor({ onRun, loading, onQueryChange, externalQuery }: Qu
         >
           {loading ? (
             <>
-              <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" strokeDasharray="32" strokeDashoffset="12" /></svg>
+              <svg
+                className="h-4 w-4 animate-spin"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  strokeDasharray="32"
+                  strokeDashoffset="12"
+                />
+              </svg>
               Running...
             </>
           ) : (
             <>
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+              </svg>
               Run Query
             </>
           )}
@@ -247,26 +292,124 @@ export function QueryEditor({ onRun, loading, onQueryChange, externalQuery }: Qu
           disabled={!query.trim()}
           className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 font-medium text-sm text-[var(--color-text)] transition-colors hover:bg-[var(--color-border)] disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 7 4 4 20 4 20 7" /><line x1="9" y1="20" x2="15" y2="20" /><line x1="12" y1="4" x2="12" y2="20" /></svg>
+          <svg
+            className="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="4 7 4 4 20 4 20 7" />
+            <line x1="9" y1="20" x2="15" y2="20" />
+            <line x1="12" y1="4" x2="12" y2="20" />
+          </svg>
           Beautify
         </button>
-        <span className="text-[var(--color-text-secondary)] text-xs">{MOD_KEY}+Enter run</span>
-        <span className="text-[var(--color-text-secondary)] text-xs">{MOD_KEY}+/ comment</span>
-        <span className="text-[var(--color-text-secondary)] text-xs">{MOD_KEY}+Shift+F beautify</span>
+        <span className="text-[var(--color-text-secondary)] text-xs">
+          {MOD_KEY}+Enter run
+        </span>
+        <span className="text-[var(--color-text-secondary)] text-xs">
+          {MOD_KEY}+/ comment
+        </span>
+        <span className="text-[var(--color-text-secondary)] text-xs">
+          {MOD_KEY}+Shift+F beautify
+        </span>
       </div>
     </div>
   );
 }
 
-type TokenType = "keyword" | "function" | "string" | "number" | "label" | "operator" | "bracket" | "comment" | "text";
+type TokenType =
+  | "keyword"
+  | "function"
+  | "string"
+  | "number"
+  | "label"
+  | "node"
+  | "edge"
+  | "operator"
+  | "bracket"
+  | "comment"
+  | "text";
 
 const KEYWORDS = new Set([
-  "MATCH", "OPTIONAL", "RETURN", "WHERE", "CREATE", "MERGE", "SET", "DELETE",
-  "DETACH", "REMOVE", "WITH", "UNWIND", "AS", "ORDER", "BY", "SKIP", "LIMIT",
-  "UNION", "ALL", "CALL", "YIELD", "AND", "OR", "NOT", "XOR", "IN", "IS",
-  "NULL", "TRUE", "FALSE", "DISTINCT", "CASE", "WHEN", "THEN", "ELSE", "END",
-  "ON", "EXISTS", "CONTAINS", "STARTS", "ENDS", "COUNT", "ASC", "DESC",
-  "ASCENDING", "DESCENDING", "FOREACH", "LOAD", "CSV", "FROM", "HEADERS",
+  "MATCH",
+  "OPTIONAL",
+  "RETURN",
+  "WHERE",
+  "CREATE",
+  "MERGE",
+  "SET",
+  "DELETE",
+  "DETACH",
+  "REMOVE",
+  "WITH",
+  "UNWIND",
+  "AS",
+  "ORDER",
+  "BY",
+  "SKIP",
+  "LIMIT",
+  "UNION",
+  "ALL",
+  "CALL",
+  "YIELD",
+  "AND",
+  "OR",
+  "NOT",
+  "XOR",
+  "IN",
+  "IS",
+  "NULL",
+  "TRUE",
+  "FALSE",
+  "DISTINCT",
+  "CASE",
+  "WHEN",
+  "THEN",
+  "ELSE",
+  "END",
+  "ON",
+  "EXISTS",
+  "CONTAINS",
+  "STARTS",
+  "ENDS",
+  "COUNT",
+  "ASC",
+  "DESC",
+  "ASCENDING",
+  "DESCENDING",
+  "FOREACH",
+  "LOAD",
+  "CSV",
+  "FROM",
+  "HEADERS",
+  "PROFILE",
+  "EXPLAIN",
+  "USING",
+  "INDEX",
+  "SCAN",
+  "JOIN",
+  "CONSTRAINT",
+  "ASSERT",
+  "UNIQUE",
+  "DROP",
+  "ADD",
+  "DO",
+  "FOR",
+  "REQUIRE",
+  "MANDATORY",
+  "SCALAR",
+  "OF",
+  "FIELDTERMINATOR",
+  "ANY",
+  "NONE",
+  "SINGLE",
+  "REDUCE",
+  "FILTER",
+  "EXTRACT",
 ]);
 
 const TOKEN_STYLES: Record<TokenType, string> = {
@@ -276,6 +419,8 @@ const TOKEN_STYLES: Record<TokenType, string> = {
   number: "text-[var(--color-syntax-number)]",
   label: "text-[var(--color-syntax-label)]",
   operator: "text-[var(--color-syntax-operator)]",
+  node: "text-[var(--color-syntax-node)]",
+  edge: "text-[var(--color-syntax-edge)]",
   bracket: "text-[var(--color-text-secondary)]",
   comment: "italic text-[var(--color-text-secondary)] opacity-50",
   text: "text-[var(--color-text)]",
@@ -291,6 +436,8 @@ const TOKEN_PATTERNS: [TokenType, RegExp][] = [
   ["number", /^\b\d+(?:\.\d+)?\b/],
   ["label", /^:[A-Za-z_]\w*/],
   ["keyword", /^\b[A-Za-z]+\b/],
+  ["node", /^\([^)]*\)/],
+  ["edge", /^\[[^\]]*\]/],
   ["operator", /^(?:<>|<=|>=|=~|[=<>!+\-*/^%])/],
   ["bracket", /^[()[\]{}]/],
 ];
@@ -319,27 +466,29 @@ function tokenizeLine(line: string): Token[] {
     for (const [type, pattern] of TOKEN_PATTERNS) {
       const m = rest.match(pattern);
       if (m) {
+        // Edge: only in graph pattern context (immediately preceded by -)
+        if (type === "edge" && (pos === 0 || line[pos - 1] !== "-")) {
+          continue;
+        }
+
+        // Node: not when preceded by a word char (function call like exists(...))
+        if (type === "node" && pos > 0 && /\w/.test(line[pos - 1])) {
+          continue;
+        }
+
         let tokenType = type;
 
         if (type === "keyword") {
           const word = m[0].toUpperCase();
           if (KEYWORDS.has(word)) {
             tokenType = "keyword";
-          } else if (pos + m[0].length < line.length && line[pos + m[0].length] === "(") {
+          } else if (
+            pos + m[0].length < line.length &&
+            line[pos + m[0].length] === "("
+          ) {
             tokenType = "function";
           } else {
             tokenType = "text";
-          }
-        }
-
-        if (type === "label") {
-          // Only color as label if preceded by (, [, -, or start-of-line context for patterns
-          if (pos > 0) {
-            const prev = line[pos - 1];
-            if (prev !== "(" && prev !== "[" && prev !== "-" && prev !== " ") {
-              // It's a property access like n.name: or map key — treat as text
-              tokenType = "text";
-            }
           }
         }
 
@@ -371,7 +520,9 @@ function renderHighlighted(text: string) {
     return (
       <span key={i}>
         {tokens.map((token, j) => (
-          <span key={j} className={TOKEN_STYLES[token.type]}>{token.text}</span>
+          <span key={j} className={TOKEN_STYLES[token.type]}>
+            {token.text}
+          </span>
         ))}
         {i < arr.length - 1 ? "\n" : ""}
       </span>
