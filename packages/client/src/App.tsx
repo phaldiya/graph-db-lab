@@ -70,7 +70,7 @@ export default function App() {
   return (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <header className="flex items-center justify-between border-[var(--color-border)] border-b bg-[var(--color-surface)] px-5 py-3">
+      <header className="flex items-center justify-between border-(--color-border) border-b bg-(--color-surface) px-5 py-3">
         <div className="flex items-center gap-2.5">
           <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M9 2h6v5l4 7.5c.7 1.3-.1 2.5-1.5 2.5h-11C5.1 17 4.3 15.8 5 14.5L9 7V2z" stroke="var(--color-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -85,9 +85,9 @@ export default function App() {
             <circle cx="9" cy="15" r="0.5" fill="var(--color-primary)" opacity="0.4" />
             <circle cx="15" cy="14.5" r="0.4" fill="var(--color-primary)" opacity="0.3" />
           </svg>
-          <h1 className="font-semibold text-[var(--color-text)] text-lg">Graph DB Lab</h1>
+          <h1 className="font-semibold text-(--color-text) text-lg">Graph DB Lab</h1>
           {profile && (
-            <span className="rounded-full bg-[var(--color-primary)]/15 px-2.5 py-0.5 text-xs font-medium text-[var(--color-primary)]">
+            <span className="rounded-full bg-(--color-primary)/15 px-2.5 py-0.5 text-xs font-medium text-(--color-primary)">
               {profile}
             </span>
           )}
@@ -96,7 +96,7 @@ export default function App() {
           {/* History button */}
           <button
             onClick={() => setHistoryOpen(true)}
-            className="relative rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-alt)]"
+            className="relative rounded-lg p-2 text-(--color-text-secondary) transition-colors hover:bg-(--color-surface-alt)"
             aria-label={history.length > 0 ? `Query history (${history.length})` : "Query history"}
             title="Query history"
           >
@@ -105,7 +105,7 @@ export default function App() {
               <polyline points="12 6 12 12 16 14" />
             </svg>
             {history.length > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--color-primary)] px-1 text-[10px] font-medium text-white" aria-hidden="true">
+              <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-(--color-primary) px-1 text-[10px] font-medium text-white" aria-hidden="true">
                 {history.length}
               </span>
             )}
@@ -113,7 +113,7 @@ export default function App() {
           {/* Dark mode toggle */}
           <button
             onClick={toggle}
-            className="rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-alt)]"
+            className="rounded-lg p-2 text-(--color-text-secondary) transition-colors hover:bg-(--color-surface-alt)"
             aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
             title={dark ? "Switch to light mode" : "Switch to dark mode"}
           >

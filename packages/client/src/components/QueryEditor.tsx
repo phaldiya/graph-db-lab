@@ -229,11 +229,11 @@ export function QueryEditor({
   return (
     <div className="flex flex-col gap-2">
       {/* Editor */}
-      <div className="relative h-40 min-h-40 max-h-[calc(100vh-10rem)] resize-y overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] focus-within:ring-2 focus-within:ring-[var(--color-primary)]">
+      <div className="relative h-40 min-h-40 max-h-[calc(100vh-10rem)] resize-y overflow-hidden rounded-lg border border-(--color-border) bg-(--color-surface) focus-within:ring-2 focus-within:ring-(--color-primary)">
         {/* Syntax-highlighted overlay */}
         <pre
           aria-hidden
-          className="pointer-events-none absolute inset-0 m-0 overflow-hidden whitespace-pre-wrap break-words px-3 py-2.5 font-mono text-sm leading-relaxed"
+          className="pointer-events-none absolute top-0 left-0 right-0 m-0 whitespace-pre-wrap wrap-break-word px-3 py-2.5 font-mono text-sm leading-relaxed"
           style={{ transform: `translate(${-scrollLeft}px, ${-scrollTop}px)` }}
         >
           {renderHighlighted(query)}
@@ -247,7 +247,7 @@ export function QueryEditor({
           onScroll={handleScroll}
           spellCheck={false}
           aria-label="Cypher query editor"
-          className="relative z-10 h-full w-full resize-none bg-transparent px-3 py-2.5 font-mono text-sm leading-relaxed text-transparent caret-[var(--color-text)] outline-none"
+          className="relative z-10 h-full w-full resize-none bg-transparent px-3 py-2.5 font-mono text-sm leading-relaxed text-transparent caret-(--color-text) outline-none"
           placeholder="MATCH (n) RETURN n LIMIT 10"
         />
       </div>
@@ -257,7 +257,7 @@ export function QueryEditor({
         <button
           onClick={handleRun}
           disabled={loading || !query.trim()}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-4 py-2 font-medium text-sm text-white transition-colors hover:bg-[var(--color-primary-hover)] disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-(--color-primary) px-4 py-2 font-medium text-sm text-white transition-colors hover:bg-(--color-primary-hover) disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? (
             <>
@@ -290,7 +290,7 @@ export function QueryEditor({
         <button
           onClick={handleBeautify}
           disabled={!query.trim()}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 font-medium text-sm text-[var(--color-text)] transition-colors hover:bg-[var(--color-border)] disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-(--color-border) bg-(--color-surface) px-4 py-2 font-medium text-sm text-(--color-text) transition-colors hover:bg-(--color-border) disabled:cursor-not-allowed disabled:opacity-50"
         >
           <svg
             className="h-4 w-4"
@@ -307,13 +307,13 @@ export function QueryEditor({
           </svg>
           Beautify
         </button>
-        <span className="text-[var(--color-text-secondary)] text-xs">
+        <span className="text-(--color-text-secondary) text-xs">
           {MOD_KEY}+Enter run
         </span>
-        <span className="text-[var(--color-text-secondary)] text-xs">
+        <span className="text-(--color-text-secondary) text-xs">
           {MOD_KEY}+/ comment
         </span>
-        <span className="text-[var(--color-text-secondary)] text-xs">
+        <span className="text-(--color-text-secondary) text-xs">
           {MOD_KEY}+Shift+F beautify
         </span>
       </div>
@@ -413,17 +413,17 @@ const KEYWORDS = new Set([
 ]);
 
 const TOKEN_STYLES: Record<TokenType, string> = {
-  keyword: "text-[var(--color-syntax-keyword)] font-semibold",
-  function: "text-[var(--color-syntax-function)]",
-  string: "text-[var(--color-syntax-string)]",
-  number: "text-[var(--color-syntax-number)]",
-  label: "text-[var(--color-syntax-label)]",
-  operator: "text-[var(--color-syntax-operator)]",
-  node: "text-[var(--color-syntax-node)]",
-  edge: "text-[var(--color-syntax-edge)]",
-  bracket: "text-[var(--color-text-secondary)]",
-  comment: "italic text-[var(--color-text-secondary)] opacity-50",
-  text: "text-[var(--color-text)]",
+  keyword: "text-(--color-syntax-keyword) font-semibold",
+  function: "text-(--color-syntax-function)",
+  string: "text-(--color-syntax-string)",
+  number: "text-(--color-syntax-number)",
+  label: "text-(--color-syntax-label)",
+  operator: "text-(--color-syntax-operator)",
+  node: "text-(--color-syntax-node)",
+  edge: "text-(--color-syntax-edge)",
+  bracket: "text-(--color-text-secondary)",
+  comment: "italic text-(--color-text-secondary) opacity-50",
+  text: "text-(--color-text)",
 };
 
 interface Token {

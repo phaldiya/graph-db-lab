@@ -59,16 +59,16 @@ export function QueryHistory({ history, open, onSelect, onDelete, onClear, onClo
         role="dialog"
         aria-label="Query history"
         aria-hidden={!open}
-        className={`fixed top-0 right-0 z-50 flex h-full w-80 flex-col border-l border-[var(--color-border)] bg-[var(--color-surface)] shadow-lg transition-transform duration-200 ${open ? "translate-x-0" : "translate-x-full"}`}
+        className={`fixed top-0 right-0 z-50 flex h-full w-80 flex-col border-l border-(--color-border) bg-(--color-surface) shadow-lg transition-transform duration-200 ${open ? "translate-x-0" : "translate-x-full"}`}
       >
         {/* Panel header */}
-        <div className="flex items-center justify-between border-b border-[var(--color-border)] px-4 py-3">
+        <div className="flex items-center justify-between border-b border-(--color-border) px-4 py-3">
           <div className="flex items-center gap-2">
-            <svg className="h-4 w-4 text-[var(--color-text-secondary)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg className="h-4 w-4 text-(--color-text-secondary)" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="10" />
               <polyline points="12 6 12 12 16 14" />
             </svg>
-            <h2 className="text-sm font-medium text-[var(--color-text)]">
+            <h2 className="text-sm font-medium text-(--color-text)">
               History ({history.length})
             </h2>
           </div>
@@ -76,7 +76,7 @@ export function QueryHistory({ history, open, onSelect, onDelete, onClear, onClo
             {history.length > 0 && (
               <button
                 onClick={onClear}
-                className="rounded px-2 py-1 text-xs text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-error)]"
+                className="rounded px-2 py-1 text-xs text-(--color-text-secondary) transition-colors hover:bg-(--color-surface-alt) hover:text-(--color-error)"
               >
                 Clear All
               </button>
@@ -84,7 +84,7 @@ export function QueryHistory({ history, open, onSelect, onDelete, onClear, onClo
             <button
               ref={closeRef}
               onClick={onClose}
-              className="rounded-lg p-1.5 text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-alt)]"
+              className="rounded-lg p-1.5 text-(--color-text-secondary) transition-colors hover:bg-(--color-surface-alt)"
               aria-label="Close history panel"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -98,7 +98,7 @@ export function QueryHistory({ history, open, onSelect, onDelete, onClear, onClo
         {/* Entry list */}
         <ul className="flex-1 overflow-y-auto" role="list" aria-label="Query history entries">
           {history.length === 0 ? (
-            <li className="px-4 py-8 text-center text-sm text-[var(--color-text-secondary)]">
+            <li className="px-4 py-8 text-center text-sm text-(--color-text-secondary)">
               No queries yet. Run a query to see it here.
             </li>
           ) : (
@@ -114,7 +114,7 @@ export function QueryHistory({ history, open, onSelect, onDelete, onClear, onClo
                     onSelect(entry.query);
                   }
                 }}
-                className="group flex cursor-pointer items-start gap-3 border-b border-[var(--color-border)] px-4 py-3 transition-colors hover:bg-[var(--color-surface-alt)] focus-visible:bg-[var(--color-surface-alt)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-primary)]"
+                className="group flex cursor-pointer items-start gap-3 border-b border-(--color-border) px-4 py-3 transition-colors hover:bg-(--color-surface-alt) focus-visible:bg-(--color-surface-alt) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-(--color-primary)"
                 aria-label={`${entry.status === "success" ? "Successful" : "Failed"} query: ${firstLine(entry.query)}, ${relativeTime(entry.timestamp)}`}
               >
                 {/* Status dot */}
@@ -128,10 +128,10 @@ export function QueryHistory({ history, open, onSelect, onDelete, onClear, onClo
 
                 {/* Query + metadata */}
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-mono text-xs text-[var(--color-text)]">
+                  <p className="truncate font-mono text-xs text-(--color-text)">
                     {firstLine(entry.query)}
                   </p>
-                  <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[var(--color-text-secondary)]">
+                  <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-(--color-text-secondary)">
                     <span>{relativeTime(entry.timestamp)}</span>
                     {entry.duration != null && <span>{entry.duration}ms</span>}
                     {entry.rowCount != null && (
@@ -140,7 +140,7 @@ export function QueryHistory({ history, open, onSelect, onDelete, onClear, onClo
                       </span>
                     )}
                     {entry.errorMessage && (
-                      <span className="truncate text-[var(--color-error)]">{entry.errorMessage}</span>
+                      <span className="truncate text-(--color-error)">{entry.errorMessage}</span>
                     )}
                   </div>
                 </div>
@@ -151,7 +151,7 @@ export function QueryHistory({ history, open, onSelect, onDelete, onClear, onClo
                     e.stopPropagation();
                     onDelete(entry.id);
                   }}
-                  className="shrink-0 rounded p-0.5 text-[var(--color-text-secondary)] opacity-0 transition-opacity hover:text-[var(--color-error)] group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+                  className="shrink-0 rounded p-0.5 text-(--color-text-secondary) opacity-0 transition-opacity hover:text-(--color-error) group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-primary)"
                   aria-label={`Delete query: ${firstLine(entry.query)}`}
                 >
                   <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

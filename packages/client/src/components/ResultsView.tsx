@@ -66,7 +66,7 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <svg className="h-5 w-5 animate-spin text-[var(--color-primary)]" viewBox="0 0 24 24" fill="none">
+        <svg className="h-5 w-5 animate-spin text-(--color-primary)" viewBox="0 0 24 24" fill="none">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
         </svg>
@@ -76,8 +76,8 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
 
   if (error) {
     return (
-      <div role="alert" className="rounded-lg border border-[var(--color-error)] bg-red-50 p-4 dark:bg-red-950">
-        <p className="text-[var(--color-error)] text-sm">{error}</p>
+      <div role="alert" className="rounded-lg border border-(--color-error) bg-red-50 p-4 dark:bg-red-950">
+        <p className="text-(--color-error) text-sm">{error}</p>
       </div>
     );
   }
@@ -89,23 +89,23 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
       {/* Stats + Download bar */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3 text-xs">
-          <span className="text-[var(--color-text-secondary)]">
+          <span className="text-(--color-text-secondary)">
             {data.results.length} row{data.results.length !== 1 ? "s" : ""}
           </span>
-          <span className="text-[var(--color-text-secondary)] opacity-50">&middot;</span>
-          <span className="text-[var(--color-text-secondary)]">{formatDuration(data.duration)}</span>
+          <span className="text-(--color-text-secondary) opacity-50">&middot;</span>
+          <span className="text-(--color-text-secondary)">{formatDuration(data.duration)}</span>
         </div>
         <div className="flex items-center gap-1">
           <button
             onClick={downloadCsv}
-            className="inline-flex items-center gap-1 rounded px-2 py-1 text-[var(--color-text-secondary)] text-xs transition-colors hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)]"
+            className="inline-flex items-center gap-1 rounded px-2 py-1 text-(--color-text-secondary) text-xs transition-colors hover:bg-(--color-surface-alt) hover:text-(--color-text)"
           >
             <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
             CSV
           </button>
           <button
             onClick={downloadJson}
-            className="inline-flex items-center gap-1 rounded px-2 py-1 text-[var(--color-text-secondary)] text-xs transition-colors hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)]"
+            className="inline-flex items-center gap-1 rounded px-2 py-1 text-(--color-text-secondary) text-xs transition-colors hover:bg-(--color-surface-alt) hover:text-(--color-text)"
           >
             <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
             JSON
@@ -115,10 +115,10 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
 
       {/* Table */}
       {columns.length > 0 ? (
-        <div className="flex-1 overflow-auto rounded-lg border border-[var(--color-border)]">
+        <div className="flex-1 overflow-auto rounded-lg border border-(--color-border)">
           <table className="w-full text-left text-sm">
             <thead className="sticky top-0 z-10">
-              <tr className="border-[var(--color-border)] border-b bg-[var(--color-border)]/70">
+              <tr className="border-(--color-border) border-b bg-(--color-border)/70">
                 {columns.map((col) => {
                   const qs = querySort.find((s) => s.col === col);
                   const isClientSorted = sort.col === col;
@@ -126,7 +126,7 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
                     <th
                       key={col}
                       onClick={() => handleSort(col)}
-                      className="cursor-pointer select-none whitespace-nowrap px-3 py-2 font-semibold text-[var(--color-text-secondary)] text-xs uppercase tracking-wide transition-colors hover:text-[var(--color-text)]"
+                      className="cursor-pointer select-none whitespace-nowrap px-3 py-2 font-semibold text-(--color-text-secondary) text-xs uppercase tracking-wide transition-colors hover:text-(--color-text)"
                     >
                       <span className="inline-flex items-center gap-1">
                         {col}
@@ -138,11 +138,11 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
                 })}
               </tr>
             </thead>
-            <tbody className="bg-[var(--color-surface)]">
+            <tbody className="bg-(--color-surface)">
               {sortedRows.map((row, i) => (
-                <tr key={i} className={`border-[var(--color-border)] border-b last:border-b-0 transition-colors hover:bg-[var(--color-surface-alt)] ${i % 2 === 1 ? "bg-[var(--color-surface-alt)]/50" : ""}`}>
+                <tr key={i} className={`border-(--color-border) border-b last:border-b-0 transition-colors hover:bg-(--color-surface-alt) ${i % 2 === 1 ? "bg-(--color-surface-alt)/50" : ""}`}>
                   {columns.map((col) => (
-                    <td key={col} className="whitespace-nowrap px-3 py-2 font-mono text-[var(--color-text)] text-xs">
+                    <td key={col} className="whitespace-nowrap px-3 py-2 font-mono text-(--color-text) text-xs">
                       {formatCell(row[col])}
                     </td>
                   ))}
@@ -152,7 +152,7 @@ export function ResultsView({ data, error, loading, query }: ResultsViewProps) {
           </table>
         </div>
       ) : (
-        <pre className="flex-1 overflow-auto rounded-lg bg-[var(--color-surface-alt)] p-3 font-mono text-[var(--color-text)] text-sm">
+        <pre className="flex-1 overflow-auto rounded-lg bg-(--color-surface-alt) p-3 font-mono text-(--color-text) text-sm">
           {JSON.stringify(data.results, null, 2)}
         </pre>
       )}
@@ -283,7 +283,7 @@ function formatCell(value: unknown): string {
 
 function SortArrow({ dir }: { dir: SortDir }) {
   return (
-    <svg className="h-3.5 w-3.5 text-[var(--color-primary)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg className="h-3.5 w-3.5 text-(--color-primary)" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       {dir === "asc"
         ? <polyline points="6 15 12 9 18 15" />
         : <polyline points="6 9 12 15 18 9" />}
@@ -294,12 +294,12 @@ function SortArrow({ dir }: { dir: SortDir }) {
 function QuerySortBadge({ dir, index }: { dir: SortDir; index: number }) {
   return (
     <span className="inline-flex items-center gap-0.5 opacity-50" title={`Query sorted ${dir === "asc" ? "ascending" : "descending"} (ORDER BY #${index + 1})`}>
-      <svg className="h-3.5 w-3.5 text-[var(--color-text-secondary)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg className="h-3.5 w-3.5 text-(--color-text-secondary)" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         {dir === "asc"
           ? <polyline points="6 15 12 9 18 15" />
           : <polyline points="6 9 12 15 18 9" />}
       </svg>
-      {index > 0 && <span className="font-mono text-[10px] text-[var(--color-text-secondary)]">{index + 1}</span>}
+      {index > 0 && <span className="font-mono text-[10px] text-(--color-text-secondary)">{index + 1}</span>}
     </span>
   );
 }
